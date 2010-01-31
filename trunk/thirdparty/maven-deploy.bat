@@ -1,0 +1,6 @@
+call mvn deploy:deploy-file -Dfile=repository/org/w3c/jigsaw/2.2.6/jigsaw-2.2.6.jar -DpomFile=repository/org/w3c/jigsaw/2.2.6/jigsaw-2.2.6.pom -DgroupId=org.w3c.jigsaw -DartifactId=jigsaw -Dversion=2.2.6 -Dpackaging=jar -Durl=file://%cd%/../../maven2-repository/repository
+call mvn deploy:deploy-file -Dfile=repository/org/w3c/jigsaw/2.2.6/jigsaw-2.2.6-sources.jar -DpomFile=repository/org/w3c/jigsaw/2.2.6/jigsaw-2.2.6.pom -DgroupId=org.w3c.jigsaw -DartifactId=jigsaw -Dversion=2.2.6 -Dpackaging=jar -Durl=file://%cd%/../../maven2-repository/repository -Dclassifier=sources
+
+call mvn deploy:deploy-file -Dfile=repository/org/w3c/css/20100131/css-validator-20100131.jar -DpomFile=repository/org/w3c/css/20100131/css-validator-20100131.pom -DgroupId=org.w3c.css -DartifactId=css-validator -Dversion=20100131 -Dpackaging=jar -Durl=file://%cd%/../../maven2-repository/repository
+call mvn deploy:deploy-file -Dfile=repository/org/w3c/css/20100131/css-validator-20100131-sources.jar -DpomFile=repository/org/w3c/css/20100131/css-validator-20100131.pom -DgroupId=org.w3c.css -DartifactId=css-validator -Dversion=20100131 -Dpackaging=jar -Durl=file://%cd%/../../maven2-repository/repository -Dclassifier=sources
+
