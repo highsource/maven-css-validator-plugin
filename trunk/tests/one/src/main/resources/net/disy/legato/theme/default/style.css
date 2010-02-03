@@ -1,0 +1,479 @@
+.olControlPanel {
+  min-height: 32px;
+}
+
+.olControlPanel div {
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 4px;
+}
+
+.olControlPanel .LegatoControlInvisibleItemActive,
+.olControlPanel .LegatoControlInvisibleItemInactive{
+  display: none;
+}
+
+.olControlPanel .olControlNavigationItemActive,
+.olControlPanel .olControlNavigationItemInactive,
+.olControlPanel .olControlMouseDefaultsItemActive,
+.olControlPanel .olControlMouseDefaultsItemInactive,
+.olControlPanel .olControlZoomInBoxItemActive,
+.olControlPanel .olControlZoomInBoxItemInactive,
+.olControlPanel .olControlZoomOutBoxItemActive,
+.olControlPanel .olControlZoomOutBoxItemInactive,
+.olControlPanel .olControlZoomToMaxExtentItemActive,
+.olControlPanel .olControlZoomToMaxExtentItemInactive,
+.olControlPanel .olControlNavigationHistoryPreviousItemActive,
+.olControlPanel .olControlNavigationHistoryPreviousItemInactive,
+.olControlPanel .olControlNavigationHistoryNextItemActive,
+.olControlPanel .olControlNavigationHistoryNextItemInactive,
+.olControlPanel .LegatoControlDrawFeatureItemActive,
+.olControlPanel .LegatoControlDrawFeatureItemInactive,
+.olControlPanel .LegatoControlDrawLineStringItemActive,
+.olControlPanel .LegatoControlDrawLineStringItemInactive,
+.olControlPanel .LegatoControlDrawPointItemActive,
+.olControlPanel .LegatoControlDrawPointItemInactive,
+.olControlPanel .LegatoControlDrawPolygonItemActive,
+.olControlPanel .LegatoControlDrawPolygonItemInactive,
+.olControlPanel .LegatoControlDrawBoxItemActive,
+.olControlPanel .LegatoControlDrawBoxItemInactive,
+.olControlPanel .LegatoControlSelectionBoxValueProviderItemActive,
+.olControlPanel .LegatoControlSelectionBoxValueProviderItemInactive,
+.olControlPanel .LegatoControlPanZoomToggleItemActive,
+.olControlPanel .LegatoControlPanZoomToggleItemInactive,
+.olControlPanel .LegatoControlPanZoomBarToggleItemActive,
+.olControlPanel .LegatoControlPanZoomBarToggleItemInactive,
+.olControlPanel .LegatoControlMeasureLineItemActive,
+.olControlPanel .LegatoControlMeasureLineItemInactive,
+.olControlPanel .LegatoControlMeasurePolygonItemActive,
+.olControlPanel .LegatoControlMeasurePolygonItemInactive,
+.olControlPanel .LegatoControlWMSGetFeatureInfoItemActive,
+.olControlPanel .LegatoControlWMSGetFeatureInfoItemInactive,
+.olControlPanel .LegatoControlToggleOverviewMapItemActive,
+.olControlPanel .LegatoControlToggleOverviewMapItemInactive,
+.olControlPanel .LegatoControlObjectSelectorItemActive,
+.olControlPanel .LegatoControlObjectSelectorItemInactive,
+.olControlPanel .LegatoControlSelectBoundsItemActive,
+.olControlPanel .LegatoControlSelectBoundsItemInactive,
+.olControlPanel .LegatoControlSelectLonLatItemActive,
+.olControlPanel .LegatoControlSelectLonLatItemInactive,
+.olControlPanel .LegatoControlPrintItemActive,
+.olControlPanel .LegatoControlPrintItemInactive,
+.olControlPanel .LegatoControlSearchItemActive,
+.olControlPanel .LegatoControlSearchItemInactive {
+  width: 24px;
+  height: 24px;
+  float:left;
+}
+
+.olControlPanel .olControlNavigationHistoryPreviousItemActive,
+.olControlPanel .olControlNavigationHistoryPreviousItemInactive,
+.olControlPanel .olControlNavigationHistoryNextItemActive,
+.olControlPanel .olControlNavigationHistoryNextItemInactive {
+  background-position: 0px 0px;
+}
+
+
+.olControlPanel .olControlNavigationItemActive {
+  background-image: url("img/PanEnable.png");
+}
+
+.olControlPanel .olControlNavigationItemInactive {
+  background-image:  url("img/PanDisable.png");
+}
+
+
+.olControlPanel .olControlMouseDefaultsItemActive {
+  background-image: url("img/PanEnable.png");
+}
+
+.olControlPanel .olControlMouseDefaultsItemInactive {
+  background-image:  url("img/PanDisable.png");
+}
+
+.olControlPanel .olControlZoomInBoxItemActive {
+  background-image: url("img/ZoomInEnable.png");
+}
+
+.olControlPanel .olControlZoomInBoxItemInactive {
+  background-image: url("img/ZoomInDisable.png");
+}
+
+.olControlPanel .olControlZoomOutBoxItemActive {
+  background-image: url("img/ZoomOutEnable.png");
+}
+
+.olControlPanel .olControlZoomOutBoxItemInactive {
+  background-image: url("img/ZoomOutDisable.png");
+}
+
+.olControlPanel .olControlZoomToMaxExtentItemActive {
+  background-image: url("img/ResetExtentEnable.png");
+}
+.olControlPanel .olControlZoomToMaxExtentItemInactive {
+  background-image: url("img/ResetExtentDisable.png");
+}
+.olControlPanel .olControlNavigationHistoryPreviousItemActive {
+  background-image: url("img/UndoActive.png");
+}
+.olControlPanel .olControlNavigationHistoryPreviousItemInactive {
+  background-image: url("img/UndoInactive.png");
+}
+.olControlPanel .olControlNavigationHistoryNextItemActive {
+  background-image: url("img/RedoActive.png");
+}
+.olControlPanel .olControlNavigationHistoryNextItemInactive {
+  background-image: url("img/RedoInactive.png");
+}
+
+
+.olControlPanel .LegatoControlSelectionBoxValueProviderItemInactive {
+  background-image: url("img/SelectionBoxDisable.png");
+}
+
+.olControlPanel .LegatoControlSelectionBoxValueProviderItemActive {
+  background-image: url("img/SelectionBoxEnable.png");
+}
+
+.olControlPanel .LegatoControlPanZoomToggleItemActive,
+.olControlPanel .LegatoControlPanZoomBarToggleItemActive {
+  background-image: url("img/PanZoomEnable.png");
+}
+
+.olControlPanel .LegatoControlPanZoomToggleItemInactive,
+.olControlPanel .LegatoControlPanZoomBarToggleItemInactive {
+  background-image: url("img/PanZoomDisable.png");
+}
+
+.olControlPanel .LegatoControlMeasureLineItemActive {
+  background-image: url("img/MeasureLineEnable.png");
+}
+
+.olControlPanel .LegatoControlMeasureLineItemInactive {
+  background-image: url("img/MeasureLineDisable.png");
+}
+
+.olControlPanel .LegatoControlMeasurePolygonItemActive {
+  background-image: url("img/MeasurePolygonEnable.png");
+}
+
+.olControlPanel .LegatoControlMeasurePolygonItemInactive {
+  background-image: url("img/MeasurePolygonDisable.png");
+}
+
+.olControlPanel .LegatoControlWMSGetFeatureInfoItemActive {
+  background-image: url("img/QueryEnable.png");
+}
+.olControlPanel .LegatoControlWMSGetFeatureInfoItemInactive {
+  background-image: url("img/QueryDisable.png");
+}
+
+.olControlPanel .LegatoControlToggleOverviewMapItemActive
+{
+  background-image: url("img/OverviewMap.png");
+}
+.olControlPanel .LegatoControlToggleOverviewMapItemInactive
+{
+  background-image: url("img/OverviewMap.png");
+}
+
+.olControlPanel .LegatoControlObjectSelectorItemActive
+{
+  background-image: url("img/SelectEnable.png");
+}
+
+.olControlPanel .LegatoControlObjectSelectorItemInactive
+{
+  background-image: url("img/SelectDisable.png");
+}
+
+.olControlPanel .LegatoControlSelectLonLatItemActive {
+  background-image: url("img/SelectPointEnable.png");
+}
+
+.olControlPanel .LegatoControlSelectLonLatItemInactive {
+  background-image: url("img/SelectPointDisable.png");
+}
+
+.olControlPanel .LegatoControlSelectBoundsItemActive {
+  background-image: url("img/SelectBoxEnable.png");
+}
+
+.olControlPanel .LegatoControlSelectBoundsItemInactive {
+  background-image: url("img/SelectBoxDisable.png");
+}
+
+
+
+.olControlPanel .LegatoControlDrawFeatureItemActive {
+  background-image: url("img/DrawFeatureEnable.png");
+}
+
+.olControlPanel .LegatoControlDrawFeatureItemInactive {
+  background-image: url("img/DrawFeatureDisable.png");
+}
+
+.olControlPanel .LegatoControlDrawPointItemActive {
+  background-image: url("img/DrawPointEnable.png");
+}
+
+.olControlPanel .LegatoControlDrawPointItemInactive {
+  background-image: url("img/DrawPointDisable.png");
+}
+
+.olControlPanel .LegatoControlDrawLineStringItemActive {
+  background-image: url("img/DrawLineStringEnable.png");
+}
+
+.olControlPanel .LegatoControlDrawLineStringItemInactive {
+  background-image: url("img/DrawLineStringDisable.png");
+}
+
+.olControlPanel .LegatoControlDrawPolygonItemActive {
+  background-image: url("img/DrawPolygonEnable.png");
+}
+
+.olControlPanel .LegatoControlDrawPolygonItemInactive {
+  background-image: url("img/DrawPolygonDisable.png");
+}
+
+.olControlPanel .LegatoControlDrawBoxItemActive {
+  background-image: url("img/DrawBoxEnable.png");
+}
+
+.olControlPanel .LegatoControlDrawBoxItemInactive {
+  background-image: url("img/DrawBoxDisable.png");
+}
+
+.olControlScaleLineTop {
+  background-color: #FFFFFF;
+}
+
+.LegatoControlSetMapSizeSelectElement {
+  margin:4px;
+}
+
+.LegatoControlScaleInput {
+}
+
+.LegatoControlScaleInputElement {
+  margin: 6px 4px;
+}
+
+.LegatoControlScaleInputLabelElement, .LegatoControlScaleInputInputElement {
+}
+
+.LegatoControlPanZoomUp,
+.LegatoControlPanZoomDown,
+.LegatoControlPanZoomLeft,
+.LegatoControlPanZoomRight,
+.LegatoControlPanZoomOut,
+.LegatoControlPanZoomWorld,
+.LegatoControlPanZoomBarUp,
+.LegatoControlPanZoomBarDown,
+.LegatoControlPanZoomBarLeft,
+.LegatoControlPanZoomBarRight,
+.LegatoControlPanZoomBarIn,
+.LegatoControlPanZoomBarOut,
+.LegatoControlPanZoomBarWorld {
+  width: 18px;
+  height: 18px;
+}
+
+.LegatoControlPanZoomUp {
+  background-image: url("img/PanZoomUp.png");
+}
+
+.LegatoControlPanZoomDown {
+  background-image: url("img/PanZoomDown.png");
+}
+
+.LegatoControlPanZoomLeft {
+  background-image: url("img/PanZoomLeft.png");
+}
+
+.LegatoControlPanZoomRight {
+  background-image: url("img/PanZoomRight.png");
+}
+
+.LegatoControlPanZoomIn {
+  background-image: url("img/PanZoomIn.png");
+}
+
+.LegatoControlPanZoomOut {
+  background-image: url("img/PanZoomOut.png");
+}
+
+.LegatoControlPanZoomWorld {
+  background-image: url("img/PanZoomWorld.png");
+}
+
+.LegatoControlPanZoomBarUp {
+  background-image: url("img/PanZoomUp.png");
+}
+
+.LegatoControlPanZoomBarDown {
+  background-image: url("img/PanZoomDown.png");
+}
+
+.LegatoControlPanZoomBarLeft {
+  background-image: url("img/PanZoomLeft.png");
+}
+
+.LegatoControlPanZoomBarRight {
+  background-image: url("img/PanZoomRight.png");
+}
+
+.LegatoControlPanZoomBarIn {
+  background-image: url("img/PanZoomIn.png");
+}
+
+.LegatoControlPanZoomBarOut {
+  background-image: url("img/PanZoomOut.png");
+}
+
+.LegatoControlPanZoomBarWorld {
+  background-image: url("img/PanZoomWorld.png");
+}
+
+.LegatoControlPanZoomBarSlider {
+  background-image: url("img/PanZoomBarSlider.png");
+}
+
+.LegatoControlPanZoomBarScroller {
+  background-image: url("img/PanZoomBarScroller.png");
+}
+
+.LegatoControlOverviewBoundingBoxExtentRectangle {
+    overflow: hidden;
+    background-image: url("img/blank.gif");
+    border: 2px solid red;
+}
+
+.LegatoControlOverviewBoundingBoxExtentRectangleOutside {
+    overflow: hidden;
+    background-image: url("img/blank.gif");
+    border: 2px dotted red;
+}
+
+
+/*.LegatoControlLegendOverlay .LegatoControlLegendPluginLayerLegendLoading {
+  background-image: url("ajax-loader.gif");
+  background-color: #00FFFFF;
+  width: 16px;
+  height: 16px;
+}
+
+.LegatoControlLegendOverlay .LegatoControlLegendPluginLayerLegendNotDefined {
+  background-image: url("na.jpg");
+  width: 60px;
+  height: 30px;
+}*/
+
+.LegatoControlLegendContainer {
+  border-top: 1px solid grey;
+}
+
+.LegatoControlLegendPluginLayer {
+  clear: both;
+  border-bottom: 1px solid grey;
+}
+
+.LegatoControlLegendPluginLayerSelected {
+  background-color: gray;
+}
+
+.LegatoControlLegendPluginLayerDeselected {
+}
+
+.LegatoControlLegendPluginLayerName, .LegatoControlLegendPluginLayerNameDisabled {
+  float:left;
+  height:1.5em;
+  line-height:1.5em;
+  margin: -4px 0 0 5px;
+}
+
+.LegatoControlLegendPluginLayerNameDisabled {
+  color: gray;
+}
+
+.LegatoControlLegendPluginLayer
+{
+  cursor:pointer;
+  min-height:2em;
+}
+
+.LegatoControlLegendPluginLayer .LegatoControlLegendPluginLayerLink {
+  width: 13px;
+  height: 2em;
+  margin: 0px 2px;
+  float:left;
+  background-image: url("img/LayerSaveEnable.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.LegatoControlLegendPluginLayer .LegatoControlLegendPluginLayerZoomToVisibleScale {
+  width: 16px;
+  height: 2em;
+  margin: 0px 2px;
+  float:left;
+  background-image: url("img/ZoomToScale.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.LegatoControlLegendPluginLayer .LegatoControlLegendPluginLayerPositionUp,
+.LegatoControlLegendPluginLayer .LegatoControlLegendPluginLayerPositionDown,
+.LegatoControlLegendPluginLayer .LegatoControlLegendPluginLayerRemove,
+.LegatoControlLegendPluginLayer .LegatoControlLegendPluginLayerFunction {
+  width: 7px;
+  height: 2em;
+  margin-top: 0.3em;
+  margin-left: 2px;
+  float: left;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.LegatoControlLegendPluginLayer .LegatoControlLegendPluginLayerVisibility{
+  float: left;
+  margin: 0 2px;
+  padding: 0.5em 0;
+}
+.LegatoControlLegendPluginLayerVisibilityInput{
+  margin: 0 0 0 3px;
+  padding 0;
+}
+
+.LegatoControlLegendPluginLayerPositionUp {
+  background-image: url("img/LayerMoveUpDisable.png");
+}
+
+.LegatoControlLegendPluginLayerPositionDown {
+  background-image: url("img/LayerMoveDownDisable.png");
+}
+
+.LegatoControlLegendPluginLayerFunction {
+  background-image: url("img/QueryDisable.png");
+}
+
+.LegatoControlLegendPluginLayerRemove {
+  background-image: url("img/LayerRemoveDisable.png");
+}
+
+.LegatoControlLegendPluginLayerDescription {
+  clear:both;
+  padding: 2px;
+  margin-left: 3px;
+}
+
+.olControlPanel .LegatoControlPrintItemActive,
+.olControlPanel .LegatoControlPrintItemInactive {
+  background-image: url("img/Print.png");
+}
+
+.olControlPanel .LegatoControlSearchItemActive,
+.olControlPanel .LegatoControlSearchItemInactive {
+  background-image: url("img/Search.png");
+}
