@@ -19,8 +19,6 @@ import org.jfrog.maven.annomojo.annotations.MojoGoal;
 import org.jfrog.maven.annomojo.annotations.MojoParameter;
 import org.jfrog.maven.annomojo.annotations.MojoPhase;
 import org.w3c.css.css.DocumentParser;
-import org.w3c.css.css.StyleReport;
-import org.w3c.css.css.StyleReportFactory;
 import org.w3c.css.css.StyleSheet;
 import org.w3c.css.css.StyleSheetGenerator;
 import org.w3c.css.properties.PropertiesLoader;
@@ -29,6 +27,17 @@ import org.w3c.css.util.ApplContext;
 @MojoGoal("validate")
 @MojoPhase("test")
 public class ValidateMojo extends AbstractMojo {
+
+	private boolean cssValidationFailureIgnore = false;
+
+	@MojoParameter(expression = "${maven.cssValidation.failure.ignore}")
+	public boolean getCssValidationFailureIgnore() {
+		return cssValidationFailureIgnore;
+	}
+
+	public void setCssValidationFailureIgnore(boolean cssValidationFailureIgnore) {
+		this.cssValidationFailureIgnore = cssValidationFailureIgnore;
+	}
 
 	private boolean printCSS = false;
 
@@ -76,17 +85,17 @@ public class ValidateMojo extends AbstractMojo {
 		this.output = output;
 	}
 
-	private String lang;
-
-	@MojoParameter(defaultValue = "en", required = false, description = "Prints the result in the specified language"
-			+ "Possible values are de, en (default), es, fr, ja, ko, nl, zh-cn, pl, it.")
-	public String getLang() {
-		return lang;
-	}
-
-	public void setLang(String lang) {
-		this.lang = lang;
-	}
+//	private String lang;
+//
+//	@MojoParameter(defaultValue = "en", required = false, description = "Prints the result in the specified language"
+//			+ "Possible values are de, en (default), es, fr, ja, ko, nl, zh-cn, pl, it.")
+//	public String getLang() {
+//		return lang;
+//	}
+//
+//	public void setLang(String lang) {
+//		this.lang = lang;
+//	}
 
 	private int warning;
 
@@ -152,7 +161,7 @@ public class ValidateMojo extends AbstractMojo {
 			throw new MojoExecutionException("Could not list files.", ioex);
 		}
 
-		ApplContext ac = new ApplContext(getLang());
+		ApplContext ac = new ApplContext("en");
 
 		final String profile = getProfile();
 
@@ -176,22 +185,24 @@ public class ValidateMojo extends AbstractMojo {
 		// medium to use
 		ac.setMedium(getMedium());
 
-		final PrintWriter out;
-		try {
-			String encoding = ac.getMsg().getString("output-encoding-name");
-			if (encoding != null) {
-				out = new PrintWriter(new OutputStreamWriter(System.out,
-						encoding));
-			} else {
-				out = new PrintWriter(new OutputStreamWriter(System.out));
-			}
-		} catch (UnsupportedEncodingException ueex) {
-			// TODO
-			throw new MojoExecutionException("Unsupported encoding.", ueex);
-		}
-		
-		initVelocity();
+//		final PrintWriter out;
+//		try {
+//			String encoding = ac.getMsg().getString("output-encoding-name");
+//			if (encoding != null) {
+//				out = new PrintWriter(new OutputStreamWriter(System.out,
+//						encoding));
+//			} else {
+//				out = new PrintWriter(new OutputStreamWriter(System.out));
+//			}
+//		} catch (UnsupportedEncodingException ueex) {
+//			// TODO
+//			throw new MojoExecutionException("Unsupported encoding.", ueex);
+//		}
 
+//		initVelocity();
+
+		int errors = 0;
+		int warnings = 0;
 		for (File file : files) {
 			try {
 				final String url = file.toURI().toURL().toString();
@@ -199,9 +210,14 @@ public class ValidateMojo extends AbstractMojo {
 				DocumentParser parser = new DocumentParser(ac, url);
 
 				StyleSheet stylesheet = parser.getStyleSheet();
+				stylesheet.findConflicts(ac);
 
-				handleRequest(ac, url, stylesheet, getOutput(), getWarning(),
-						true, out);
+				errors = errors + stylesheet.getErrors().getErrorCount();
+				warnings = warnings
+						+ stylesheet.getWarnings().getWarningCount();
+
+//				handleRequest(ac, url, stylesheet, getOutput(), getWarning(),
+//						true, out);
 			} catch (MalformedURLException murlex) {
 				throw new MojoExecutionException("Malformed file URI.", murlex);
 			} catch (Exception ex) {
@@ -209,24 +225,47 @@ public class ValidateMojo extends AbstractMojo {
 						ex);
 			}
 		}
-	}
 
-	private void handleRequest(ApplContext ac, String title,
-			StyleSheet styleSheet, String output, int warningLevel,
-			boolean errorReport, PrintWriter out) {
+		if (errors == 0) {
+			if (warnings != 0) {
+				getLog().warn(
+						"CSS files were validated with [" + warnings
+								+ "] warnings.");
+			}
+		} else {
+			final String message;
+			if (warnings != 0) {
+				message = "CSS files were validated with [" + errors
+						+ "] errors and [" + warnings + "] warnings.";
+			} else {
+				message = "CSS files were validated with [" + errors
+						+ "] errors.";
 
-		styleSheet.findConflicts(ac);
+			}
 
-		StyleReport style = StyleReportFactory.getStyleReport(ac, title,
-				styleSheet, output, warningLevel);
-
-		if (!errorReport) {
-			style.desactivateError();
+			if (getCssValidationFailureIgnore()) {
+				getLog().error(message);
+			} else {
+				throw new MojoFailureException(message);
+			}
 		}
 
-		style.print(out);
-
 	}
+
+//	private void handleRequest(ApplContext ac, String title,
+//			StyleSheet styleSheet, String output, int warningLevel,
+//			boolean errorReport, PrintWriter out) {
+//
+//		StyleReport style = StyleReportFactory.getStyleReport(ac, title,
+//				styleSheet, output, warningLevel);
+//
+//		if (!errorReport) {
+//			style.desactivateError();
+//		}
+//
+//		style.print(out);
+//
+//	}
 
 	private List<File> getFiles() throws IOException {
 		final DirectoryScanner scanner = new DirectoryScanner();
@@ -245,9 +284,8 @@ public class ValidateMojo extends AbstractMojo {
 		}
 		return files;
 	}
-	
-	private void initVelocity()
-	{
+
+	private void initVelocity() {
 		try {
 			Velocity.setProperty(Velocity.RESOURCE_LOADER, "file");
 			Velocity.addProperty(Velocity.RESOURCE_LOADER, "jar");
