@@ -2,25 +2,19 @@ package org.jvnet.mcvp;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.velocity.app.Velocity;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.jfrog.maven.annomojo.annotations.MojoGoal;
 import org.jfrog.maven.annomojo.annotations.MojoParameter;
 import org.jfrog.maven.annomojo.annotations.MojoPhase;
 import org.w3c.css.css.DocumentParser;
 import org.w3c.css.css.StyleSheet;
-import org.w3c.css.css.StyleSheetGenerator;
 import org.w3c.css.properties.PropertiesLoader;
 import org.w3c.css.util.ApplContext;
 
@@ -85,17 +79,19 @@ public class ValidateMojo extends AbstractMojo {
 		this.output = output;
 	}
 
-//	private String lang;
-//
-//	@MojoParameter(defaultValue = "en", required = false, description = "Prints the result in the specified language"
-//			+ "Possible values are de, en (default), es, fr, ja, ko, nl, zh-cn, pl, it.")
-//	public String getLang() {
-//		return lang;
-//	}
-//
-//	public void setLang(String lang) {
-//		this.lang = lang;
-//	}
+	// private String lang;
+	//
+	// @MojoParameter(defaultValue = "en", required = false, description =
+	// "Prints the result in the specified language"
+	// +
+	// "Possible values are de, en (default), es, fr, ja, ko, nl, zh-cn, pl, it.")
+	// public String getLang() {
+	// return lang;
+	// }
+	//
+	// public void setLang(String lang) {
+	// this.lang = lang;
+	// }
 
 	private int warning;
 
@@ -185,22 +181,6 @@ public class ValidateMojo extends AbstractMojo {
 		// medium to use
 		ac.setMedium(getMedium());
 
-//		final PrintWriter out;
-//		try {
-//			String encoding = ac.getMsg().getString("output-encoding-name");
-//			if (encoding != null) {
-//				out = new PrintWriter(new OutputStreamWriter(System.out,
-//						encoding));
-//			} else {
-//				out = new PrintWriter(new OutputStreamWriter(System.out));
-//			}
-//		} catch (UnsupportedEncodingException ueex) {
-//			// TODO
-//			throw new MojoExecutionException("Unsupported encoding.", ueex);
-//		}
-
-//		initVelocity();
-
 		int errors = 0;
 		int warnings = 0;
 		for (File file : files) {
@@ -216,8 +196,8 @@ public class ValidateMojo extends AbstractMojo {
 				warnings = warnings
 						+ stylesheet.getWarnings().getWarningCount();
 
-//				handleRequest(ac, url, stylesheet, getOutput(), getWarning(),
-//						true, out);
+				// handleRequest(ac, url, stylesheet, getOutput(), getWarning(),
+				// true, out);
 			} catch (MalformedURLException murlex) {
 				throw new MojoExecutionException("Malformed file URI.", murlex);
 			} catch (Exception ex) {
@@ -252,21 +232,6 @@ public class ValidateMojo extends AbstractMojo {
 
 	}
 
-//	private void handleRequest(ApplContext ac, String title,
-//			StyleSheet styleSheet, String output, int warningLevel,
-//			boolean errorReport, PrintWriter out) {
-//
-//		StyleReport style = StyleReportFactory.getStyleReport(ac, title,
-//				styleSheet, output, warningLevel);
-//
-//		if (!errorReport) {
-//			style.desactivateError();
-//		}
-//
-//		style.print(out);
-//
-//	}
-
 	private List<File> getFiles() throws IOException {
 		final DirectoryScanner scanner = new DirectoryScanner();
 		scanner.setBasedir(getDirectory().getAbsoluteFile());
@@ -283,32 +248,6 @@ public class ValidateMojo extends AbstractMojo {
 			files.add(new File(directory, name).getCanonicalFile());
 		}
 		return files;
-	}
-
-	private void initVelocity() {
-		try {
-			Velocity.setProperty(Velocity.RESOURCE_LOADER, "file");
-			Velocity.addProperty(Velocity.RESOURCE_LOADER, "jar");
-			Velocity
-					.setProperty("jar." + Velocity.RESOURCE_LOADER + ".class",
-							"org.apache.velocity.runtime.resource.loader.JarResourceLoader");
-
-			final URL url = StyleSheetGenerator.class
-					.getResource("StyleSheetGenerator.class");
-			final String path = url.toString();
-
-			if (path.startsWith("jar:") && path.indexOf("!/") >= 0) {
-				Velocity.setProperty("jar." + Velocity.RESOURCE_LOADER
-						+ ".path", path.substring(0, path.indexOf("!/")));
-			} else {
-				Velocity.addProperty("file." + Velocity.RESOURCE_LOADER
-						+ ".path", url.getFile());
-			}
-			Velocity.init();
-		} catch (Exception e) {
-			System.err.println("Failed to initialize Velocity. "
-					+ "Validator might not work as expected.");
-		}
 	}
 
 }
