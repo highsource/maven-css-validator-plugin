@@ -1,36 +1,28 @@
-package org.jvnet.mcvp.tests;
+package org.jvnet.mcvp;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import junit.framework.TestCase;
-
-import org.apache.velocity.app.Velocity;
-import org.w3c.css.css.DocumentParser;
-import org.w3c.css.css.StyleReport;
-import org.w3c.css.css.StyleReportFactory;
+import org.apache.maven.plugin.logging.Log;
 import org.w3c.css.css.StyleSheet;
 import org.w3c.css.css.StyleSheetGenerator;
 import org.w3c.css.parser.CssError;
 import org.w3c.css.parser.CssErrorToken;
 import org.w3c.css.parser.CssParseException;
 import org.w3c.css.properties.PropertiesLoader;
-import org.w3c.css.util.ApplContext;
 import org.w3c.css.util.InvalidParamException;
 import org.w3c.css.util.Utf8Properties;
 import org.w3c.css.util.Warning;
 
-public class CheckStyleTest extends TestCase {
+class LogStyleSheetReport implements StyleSheetReport {
 
-	private static Utf8Properties availablePropertiesURL;
+	private static Utf8Properties<String, String> availablePropertiesURL;
 
 	static {
 
-		availablePropertiesURL = new Utf8Properties();
+		availablePropertiesURL = new Utf8Properties<String, String>();
 		try {
 			java.io.InputStream f;
 			f = StyleSheetGenerator.class
@@ -44,36 +36,33 @@ public class CheckStyleTest extends TestCase {
 		}
 	}
 
-	public void testStyle0() throws Exception {
+	private final Log log;
 
-		initVelocity();
+	public LogStyleSheetReport(Log log) {
+		super();
+		this.log = log;
+	}
 
-		ApplContext ac = new ApplContext("en");
+	public Log getLog() {
+		return log;
+	}
 
-		ac.setCssVersion("css21");
-
-		ac.setMedium("all");
-
-		final URL url = getClass().getResource("Style[0].css");
-
-		DocumentParser parser = new DocumentParser(ac, url.toString());
-
-		StyleSheet stylesheet = parser.getStyleSheet();
-
-		stylesheet.findConflicts(ac);
+	public void report(StyleSheet stylesheet) {
 
 		// TODO
-		System.out.println("W3C CSS Validator results for " + url.toString());
+		// System.out.println("W3C CSS Validator results for " +
+		// url.toString());
 
 		if (stylesheet.getErrors().getErrorCount() == 0) {
-			System.out.println("Congratulations! No Error Found.");
+			// getLog().info("No CSS validation failures.");
 
-			System.out.println("This document validates as  "
-					+ ac.getMsg().getString(ac.getCssVersion()) + "!");
+			// System.out.println("This document validates as  "
+			// + ac.getMsg().getString(ac.getCssVersion()) + "!");
 
 		} else {
-			System.out.println("Sorry! We found the following errors ("
-					+ stylesheet.getErrors().getErrorCount() + ")");
+			getLog().error(
+					"Found [" + stylesheet.getErrors().getErrorCount()
+							+ "] errors.");
 			String sf = "";
 			for (CssError error : stylesheet.getErrors().getErrors()) {
 
@@ -102,26 +91,27 @@ public class CheckStyleTest extends TestCase {
 				}
 				if (!sf.equals(error.getSourceFile())) {
 					sf = error.getSourceFile();
-					System.out.println("URI : " + sf);
+					getLog().error("Location: " + sf);
 				}
 
-				System.out.println("Line : " + error.getLine() + context_msg);
+				getLog().error("Line: " + error.getLine() + context_msg);
 
 				if (link_value != null) {
 					final String link_name = (String) hashtable
 							.get("link_name_parse_error");
-					System.out.println("      (" + before_link + " : "
-							+ link_name + " (" + link_value + ")");
+					getLog().error(
+							"      " + before_link + ": " + link_name + " ("
+									+ link_value + ")");
 				}
 
-				System.out.println("      " + error_msg);
+				getLog().error("      " + error_msg);
 
 				if (span_value != null) {
 					final String span_class = (String) hashtable
 							.get("span_class_parse_error");
 					;
-					// System.out.println("      " + span_class);
-					System.out.println("      " + span_value);
+					// getLog().todo("      " + span_class);
+					getLog().error("      " + span_value);
 				}
 
 			}
@@ -129,63 +119,33 @@ public class CheckStyleTest extends TestCase {
 		int warningLevel = 2;
 
 		if (stylesheet.getWarnings().getWarningCount() > 0) {
-			System.out.println("Warnings ("
-					+ stylesheet.getWarnings().getWarningCount() + ")");
+			getLog().warn(
+					"Found [" + stylesheet.getWarnings().getWarningCount()
+							+ "] warnings.");
 			stylesheet.getWarnings().sort();
 			String sf = "";
 			for (Warning warning : stylesheet.getWarnings().getWarnings()) {
 				if (sf != warning.getSourceFile()) {
 					sf = warning.getSourceFile();
-					System.out.println("URI: " + sf);
+					getLog().warn("Location: " + sf);
 					if (warning.getLevel() <= warningLevel) {
-						System.out.println("Line : "
-								+ warning.getLine()
-								+ " - "
-								+ (warning.getContext() != null ? warning
-										.getContext().toString()
-										+ " - " : "")
-								+ warning.getWarningMessage());
+						getLog()
+								.warn(
+										"Line: "
+												+ warning.getLine()
+												+ " - "
+												+ (warning.getContext() != null ? warning
+														.getContext()
+														.toString()
+														+ " - "
+														: "")
+												+ warning.getWarningMessage());
 					}
 				}
 
 			}
 		}
 
-		StyleReport style = StyleReportFactory.getStyleReport(ac, "test",
-				stylesheet, "text", 2);
-
-		// if (!errorReport) {
-		// style.desactivateError();
-		// }
-
-		style.print(new PrintWriter(System.out));
-
-	}
-
-	private void initVelocity() {
-		try {
-			Velocity.setProperty(Velocity.RESOURCE_LOADER, "file");
-			Velocity.addProperty(Velocity.RESOURCE_LOADER, "jar");
-			Velocity
-					.setProperty("jar." + Velocity.RESOURCE_LOADER + ".class",
-							"org.apache.velocity.runtime.resource.loader.JarResourceLoader");
-
-			final URL url = StyleSheetGenerator.class
-					.getResource("StyleSheetGenerator.class");
-			final String path = url.toString();
-
-			if (path.startsWith("jar:") && path.indexOf("!/") >= 0) {
-				Velocity.setProperty("jar." + Velocity.RESOURCE_LOADER
-						+ ".path", path.substring(0, path.indexOf("!/")));
-			} else {
-				Velocity.addProperty("file." + Velocity.RESOURCE_LOADER
-						+ ".path", url.getFile());
-			}
-			Velocity.init();
-		} catch (Exception e) {
-			System.err.println("Failed to initialize Velocity. "
-					+ "Validator might not work as expected.");
-		}
 	}
 
 	private Hashtable<String, Object> produceError(CssError csserror) {

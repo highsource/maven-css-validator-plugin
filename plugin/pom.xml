@@ -35,6 +35,12 @@
 			<groupId>org.w3c.css</groupId>
 			<artifactId>css-validator</artifactId>
 			<version>20100131</version>
+			<!--exclusions>
+				<exclusion>
+					<groupId>org.apache.velocity</groupId>
+					<artifactId>velocity</artifactId>
+				</exclusion>
+			</exclusions-->
 		</dependency>
 	</dependencies>
 	<build>

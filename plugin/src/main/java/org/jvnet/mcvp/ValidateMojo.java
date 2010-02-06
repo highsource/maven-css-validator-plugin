@@ -33,17 +33,18 @@ public class ValidateMojo extends AbstractMojo {
 		this.cssValidationFailureIgnore = cssValidationFailureIgnore;
 	}
 
-	private boolean printCSS = false;
-
-	@MojoParameter(defaultValue = "false", required = false, description = "Prints the validated CSS (only with text output, the CSS is printed with other outputs). "
-			+ "Possible values are true or false (default).")
-	public boolean getPrintCSS() {
-		return printCSS;
-	}
-
-	public void setPrintCSS(boolean printCSS) {
-		this.printCSS = printCSS;
-	}
+	// private boolean printCSS = false;
+	//
+	// @MojoParameter(defaultValue = "false", required = false, description =
+	// "Prints the validated CSS (only with text output, the CSS is printed with other outputs). "
+	// + "Possible values are true or false (default).")
+	// public boolean getPrintCSS() {
+	// return printCSS;
+	// }
+	//
+	// public void setPrintCSS(boolean printCSS) {
+	// this.printCSS = printCSS;
+	// }
 
 	private String profile = "css21";
 
@@ -68,16 +69,17 @@ public class ValidateMojo extends AbstractMojo {
 		this.medium = medium;
 	}
 
-	private String output = "text";
-
-	@MojoParameter(defaultValue = "text", required = false, description = "Prints the result in the selected format. Possible values are text (default), xhtml, html (same result as xhtml), soap12.")
-	public String getOutput() {
-		return output;
-	}
-
-	public void setOutput(String output) {
-		this.output = output;
-	}
+	// private String output = "text";
+	//
+	// @MojoParameter(defaultValue = "text", required = false, description =
+	// "Prints the result in the selected format. Possible values are text (default), xhtml, html (same result as xhtml), soap12.")
+	// public String getOutput() {
+	// return output;
+	// }
+	//
+	// public void setOutput(String output) {
+	// this.output = output;
+	// }
 
 	// private String lang;
 	//
@@ -181,6 +183,8 @@ public class ValidateMojo extends AbstractMojo {
 		// medium to use
 		ac.setMedium(getMedium());
 
+		final StyleSheetReport report = new LogStyleSheetReport(getLog());
+
 		int errors = 0;
 		int warnings = 0;
 		for (File file : files) {
@@ -195,6 +199,8 @@ public class ValidateMojo extends AbstractMojo {
 				errors = errors + stylesheet.getErrors().getErrorCount();
 				warnings = warnings
 						+ stylesheet.getWarnings().getWarningCount();
+
+				report.report(stylesheet);
 
 				// handleRequest(ac, url, stylesheet, getOutput(), getWarning(),
 				// true, out);
