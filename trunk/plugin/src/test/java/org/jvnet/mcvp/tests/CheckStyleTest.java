@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Map.Entry;
 
 import junit.framework.TestCase;
 
@@ -23,6 +22,7 @@ import org.w3c.css.properties.PropertiesLoader;
 import org.w3c.css.util.ApplContext;
 import org.w3c.css.util.InvalidParamException;
 import org.w3c.css.util.Utf8Properties;
+import org.w3c.css.util.Warning;
 
 public class CheckStyleTest extends TestCase {
 
@@ -62,15 +62,92 @@ public class CheckStyleTest extends TestCase {
 
 		stylesheet.findConflicts(ac);
 
-		if (stylesheet.getErrors().getErrorCount() > 0) {
+		// TODO
+		System.out.println("W3C CSS Validator results for " + url.toString());
+
+		if (stylesheet.getErrors().getErrorCount() == 0) {
+			System.out.println("Congratulations! No Error Found.");
+
+			System.out.println("This document validates as  "
+					+ ac.getMsg().getString(ac.getCssVersion()) + "!");
+
+		} else {
+			System.out.println("Sorry! We found the following errors ("
+					+ stylesheet.getErrors().getErrorCount() + ")");
+			String sf = "";
 			for (CssError error : stylesheet.getErrors().getErrors()) {
 
 				final Hashtable<String, Object> hashtable = produceError(error);
 
-				for (Entry he : hashtable.entrySet()) {
-					System.out.println(he.getKey() + ">>" + he.getValue());
+				String error_msg = (String) hashtable.get("ErrorMsg");
+				String context_msg = (String) hashtable.get("CtxMsg");
+
+				String before_link = null;
+				String link_value = null;
+				if (hashtable.containsKey("link_value_parse_error")) {
+					before_link = (String) hashtable
+							.get("link_before_parse_error");
+					link_value = (String) hashtable
+							.get("link_value_parse_error");
+				} else {
+					link_value = null;
 				}
-				System.out.println("-----------------------");
+				String span_value = null;
+				if (link_value == null
+						&& hashtable.containsKey("span_value_parse_error"))
+					span_value = (String) hashtable
+							.get("span_value_parse_error");
+				else {
+					span_value = null;
+				}
+				if (!sf.equals(error.getSourceFile())) {
+					sf = error.getSourceFile();
+					System.out.println("URI : " + sf);
+				}
+
+				System.out.println("Line : " + error.getLine() + context_msg);
+
+				if (link_value != null) {
+					final String link_name = (String) hashtable
+							.get("link_name_parse_error");
+					System.out.println("      (" + before_link + " : "
+							+ link_name + " (" + link_value + ")");
+				}
+
+				System.out.println("      " + error_msg);
+
+				if (span_value != null) {
+					final String span_class = (String) hashtable
+							.get("span_class_parse_error");
+					;
+					// System.out.println("      " + span_class);
+					System.out.println("      " + span_value);
+				}
+
+			}
+		}
+		int warningLevel = 2;
+
+		if (stylesheet.getWarnings().getWarningCount() > 0) {
+			System.out.println("Warnings ("
+					+ stylesheet.getWarnings().getWarningCount() + ")");
+			stylesheet.getWarnings().sort();
+			String sf = "";
+			for (Warning warning : stylesheet.getWarnings().getWarnings()) {
+				if (sf != warning.getSourceFile()) {
+					sf = warning.getSourceFile();
+					System.out.println("URI: " + sf);
+					if (warning.getLevel() <= warningLevel) {
+						System.out.println("Line : "
+								+ warning.getLine()
+								+ " - "
+								+ (warning.getContext() != null ? warning
+										.getContext().toString()
+										+ " - " : "")
+								+ warning.getWarningMessage());
+					}
+				}
+
 			}
 		}
 
@@ -115,19 +192,19 @@ public class CheckStyleTest extends TestCase {
 		Hashtable<String, Object> h = new Hashtable<String, Object>();
 		try {
 			Throwable ex = csserror.getException();
-			h.put("Error", csserror);
-			h.put("CtxName", "nocontext");
+			// h.put("Error", csserror);
+			// h.put("CtxName", "nocontext");
 			h.put("CtxMsg", "");
 			h.put("ErrorMsg",
 					((ex.getMessage() == null) ? "" : ex.getMessage()));
-			h.put("ClassName", "unkownerror");
+			// h.put("ClassName", "unkownerror");
 			if (ex instanceof FileNotFoundException) {
-				h.put("ClassName", "notfound");
+				// h.put("ClassName", "notfound");
 				h.put("ErrorMsg", "File not found" + ": " + ex.getMessage());
 			} else if (ex instanceof CssParseException) {
 				produceParseException((CssParseException) ex, h);
 			} else if (ex instanceof InvalidParamException) {
-				h.put("ClassName", "invalidparam");
+				// h.put("ClassName", "invalidparam");
 			} else if (ex instanceof IOException) {
 				String stringError = ex.toString();
 				// int index = stringError.indexOf(':');
@@ -142,15 +219,15 @@ public class CheckStyleTest extends TestCase {
 				// TODO: why not using ex.toString()?
 				h.put("CtxMsg", stringError);// .substring(0,
 				// index));
-				h.put("ClassName", "io");
+				// h.put("ClassName", "io");
 
 			} else if (csserror instanceof CssErrorToken) {
 				CssErrorToken terror = (CssErrorToken) csserror;
-				h.put("ClassName", "errortoken");
+				// h.put("ClassName", "errortoken");
 				h.put("ErrorMsg", terror.getErrorDescription() + " : "
 						+ terror.getSkippedString());
 			} else {
-				h.put("ClassName", "unkownerror");
+				// h.put("ClassName", "unkownerror");
 				h.put("ErrorMsg", "Unknown Error");
 				if (ex instanceof NullPointerException) {
 					// ohoh, a bug
@@ -191,7 +268,7 @@ public class CheckStyleTest extends TestCase {
 		} else {
 			ht_error.put("CtxName", "nocontext");
 		}
-		ht_error.put("ClassName", "parse-error");
+		// ht_error.put("ClassName", "parse-error");
 		String name = error.getProperty();
 		String ret;
 		if ((name != null) && (getURLProperty(name) != null)

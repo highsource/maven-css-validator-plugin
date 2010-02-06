@@ -57,7 +57,7 @@
 	</scm>
 
 	<modules>
-		<!--module>plugin</module-->
+		<module>plugin</module>
 	</modules>
 
 	<profiles>
