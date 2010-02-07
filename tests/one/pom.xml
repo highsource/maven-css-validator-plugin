@@ -7,12 +7,6 @@
 	<packaging>jar</packaging>
 	<version>1.0.0</version>
 	<name>Maven CSS Validator Plugin Test [one] </name>
-	<!--parent>
-		<groupId>org.jvnet.mcvp</groupId>
-		<artifactId>maven-css-validator-plugin-tests</artifactId>
-		<version>1.0.0</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent-->
 	<pluginRepositories>
 		<pluginRepository>
 			<id>maven2-repository.dev.java.net</id>
