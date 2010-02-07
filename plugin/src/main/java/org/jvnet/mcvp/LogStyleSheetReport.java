@@ -48,7 +48,7 @@ class LogStyleSheetReport implements StyleSheetReport {
 	}
 
 	public void report(StyleSheet stylesheet) {
-
+		
 		// TODO
 		// System.out.println("W3C CSS Validator results for " +
 		// url.toString());
