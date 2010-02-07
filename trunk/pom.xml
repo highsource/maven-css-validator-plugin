@@ -29,14 +29,7 @@
 			</roles>
 		</developer>
 	</developers>
-
 	<distributionManagement>
-		<site>
-			<id>maven-jaxb2-plugin-www</id>
-			<!--url>java-net:/maven-css-validatior-plugin/trunk/www/mcvp-project</url-->
-
-			<url>file:www/mcvp-project</url>
-		</site>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>java.net-maven2-repository</id>
@@ -46,9 +39,10 @@
 			<id>dev.java.net-snapshots</id>
 			<url>${dev.java.net-snapshots.deploy.url}</url>
 		</snapshotRepository>
+		<site>
+			<url>${sftp.static.highsource.org}/maven-css-validator-plugin</url>
+		</site>
 	</distributionManagement>
-
-
 
 	<scm>
 		<connection>scm:svn:https://svn.dev.java.net/svn/maven-css-validator-plugin/trunk</connection>
