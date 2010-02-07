@@ -13,40 +13,40 @@
 	<li>Configure the plugin in <code>project/build/plugins</code>.</li>
 </ol>
 <code><pre>
-<pluginRepositories>
+&lt;pluginRepositories>
 	...
-	<pluginRepository>
-		<id>maven2-repository.dev.java.net</id>
-		<url>http://download.java.net/maven/2</url>
-		<layout>default</layout>
-	</pluginRepository>
-</pluginRepositories>
+	&lt;pluginRepository>
+		&lt;id>maven2-repository.dev.java.net&lt;/id>
+		&lt;url>http://download.java.net/maven/2&lt;/url>
+		&lt;layout>default&lt;/layout>
+	&lt;/pluginRepository>
+&lt;/pluginRepositories>
 
 ...
-<build>
-	<plugins>
-		<plugin>
-			<groupId>org.jvnet.mcvp</groupId>
-			<artifactId>maven-css-validator-plugin</artifactId>
-			<executions>
-				<execution>
-					<goals>
-						<goal>validate</goal>
-					</goals>
-					<configuration>
-						<!-- CSS Profile (css21 is default) -->			
-						<profile>css21</profile>
-						<!-- Included CSS files (src/main/webapp/**/*.css is default) -->
-						<includes>
-							<include>src/main/resources/**/*.css</include>
-							<include>src/main/webapp/**/*.css</include>
-						</includes>
-					</configuration>
-				</execution>
-			</executions>
-		</plugin>
-	</plugins>
-</build>
+&lt;build>
+	&lt;plugins>
+		&lt;plugin>
+			&lt;groupId>org.jvnet.mcvp&lt;/groupId>
+			&lt;artifactId>maven-css-validator-plugin&lt;/artifactId>
+			&lt;executions>
+				&lt;execution>
+					&lt;goals>
+						&lt;goal>validate&lt;/goal>
+					&lt;/goals>
+					&lt;configuration>
+						&lt;!-- CSS Profile (css21 is default) -->			
+						&lt;profile>css21&lt;/profile>
+						&lt;!-- Included CSS files (src/main/webapp/**/*.css is default) -->
+						&lt;includes>
+							&lt;include>src/main/resources/**/*.css&lt;/include>
+							&lt;include>src/main/webapp/**/*.css&lt;/include>
+						&lt;/includes>
+					&lt;/configuration>
+				&lt;/execution>
+			&lt;/executions>
+		&lt;/plugin>
+	&lt;/plugins>
+&lt;/build>
 </pre></code>
 
 <p>You'll get a report like one below:</p>
