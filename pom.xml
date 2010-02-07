@@ -8,7 +8,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<name>Maven CSS Validator Plugin Project</name>
 	<inceptionYear>2010</inceptionYear>
-	<url>https://maven-css-validator-plugin.dev.java.net/mcvp-project</url>
+	<url>https://maven-css-validator-plugin.dev.java.net</url>
 	<description>Maven 2 plugin for CSS file validation.</description>
 
 	<licenses>
@@ -40,7 +40,7 @@
 			<url>${dev.java.net-snapshots.deploy.url}</url>
 		</snapshotRepository>
 		<site>
-			<url>${sftp.static.highsource.org}/maven-css-validator-plugin</url>
+			<url>${sftp.static.highsource.org}/mcvp</url>
 		</site>
 	</distributionManagement>
 
