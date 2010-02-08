@@ -94,7 +94,7 @@ class LogStyleSheetReport implements StyleSheetReport {
 					getLog().error("Location: " + sf);
 				}
 
-				getLog().error("Line: " + error.getLine() + context_msg);
+				getLog().error("Line: " + error.getLine() + " " + context_msg);
 
 				if (link_value != null) {
 					final String link_name = (String) hashtable
