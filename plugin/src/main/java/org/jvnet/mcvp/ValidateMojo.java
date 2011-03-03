@@ -1,7 +1,10 @@
 package org.jvnet.mcvp;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +12,12 @@ import java.util.List;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.velocity.app.VelocityEngine;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.jfrog.maven.annomojo.annotations.MojoGoal;
 import org.jfrog.maven.annomojo.annotations.MojoParameter;
 import org.jfrog.maven.annomojo.annotations.MojoPhase;
+import org.jvnet.mcvp.reporting.ReportGenerator;
 import org.w3c.css.css.DocumentParser;
 import org.w3c.css.css.StyleSheet;
 import org.w3c.css.properties.PropertiesLoader;
@@ -21,6 +26,30 @@ import org.w3c.css.util.ApplContext;
 @MojoGoal("validate")
 @MojoPhase("test")
 public class ValidateMojo extends AbstractMojo {
+
+	/**
+	 * The location of the report file created by the CSS Validator.
+	 */
+	@MojoParameter(expression=Constants.REPORT_LOCATION)
+	private File outputFile;
+	
+	/**
+	 * parameter used to determine whether or not to create a site report.
+	 */
+	private boolean createReport;
+	
+	private Writer reportWriter;
+	
+	//TODO: amend description to point to url for configuration of report 
+	//Nasty gotcha here isCreateReport doesn't work with @MojoParameter!
+	@MojoParameter(defaultValue="false",required=false, description="Creates a report in maven site. Possible values are true, false.")
+	public boolean getCreateReport() {
+		return createReport;
+	}
+
+	public void setCreateReport(boolean createReport) {
+		this.createReport = createReport;
+	}
 
 	private boolean cssValidationFailureIgnore = false;
 
@@ -182,11 +211,18 @@ public class ValidateMojo extends AbstractMojo {
 
 		// medium to use
 		ac.setMedium(getMedium());
-
+		//PR warnings were not being set.
+		ac.setWarningLevel(warning);
+		//PR this causes a org.w3c.css.css.StyleSheetGeneratorHTML: couldn't load URLs properties exception
+		//could possibly use the velocity "text" template to create the logging??
 		final StyleSheetReport report = new LogStyleSheetReport(getLog());
 
 		int errors = 0;
 		int warnings = 0;
+		if (createReport) {
+			initialiseReporting();
+		}
+		
 		for (File file : files) {
 			try {
 				final String url = file.toURI().toURL().toString();
@@ -195,6 +231,13 @@ public class ValidateMojo extends AbstractMojo {
 
 				StyleSheet stylesheet = parser.getStyleSheet();
 				stylesheet.findConflicts(ac);
+
+				
+				if (createReport) {
+				    ReportGenerator rGenerator = new ReportGenerator(ac, "", stylesheet,
+						"maven",warning);
+				    writeStyleSheetReport(url, rGenerator);
+				}
 
 				errors = errors + stylesheet.getErrors().getErrorCount();
 				warnings = warnings
@@ -211,7 +254,14 @@ public class ValidateMojo extends AbstractMojo {
 						ex);
 			}
 		}
-
+		if (createReport) {
+			try {
+				reportWriter.close();
+			} catch (IOException e) {
+				throw new MojoExecutionException("couldn't close report",e);
+			}
+		}
+	
 		if (errors == 0) {
 			if (warnings != 0) {
 				getLog().warn(
@@ -255,5 +305,57 @@ public class ValidateMojo extends AbstractMojo {
 		}
 		return files;
 	}
+	
+	/**
+	 * Remove the baseDir from the url (if possible) otherwise return the url.
+	 * @param url
+	 * @return the url (basedir removed if present).
+	 */
+	private String getStyleSheetLocation(String url) {
+	    String retStr = url;
+	    try {
+		String baseDirStr = getDirectory().toURI().toURL().toString();
+		String test = url.split(baseDirStr)[1];
+		if (test != null) {
+		    retStr = test;
+		if (!test.startsWith("/")) {
+		    retStr = "/" + retStr;
+		}
+	    }
+	} catch (MalformedURLException mException) {
+	    // return the original url;
+	}
+	return retStr;
+    }
+	
+	private void writeStyleSheetReport(final String url,ReportGenerator rGenerator) throws Exception {
+	    
+	    String test = getStyleSheetLocation(url);
+	    //add the url to the velocity template for reporting
+	    rGenerator.getContext().put("mcvpURL", test);
+	    rGenerator.append(reportWriter);
+	}
+
+	/**
+	 * Sets up the velocity engine and creates the report output file.
+	 * if an {@link IOException} is thrown whilst creating the report the plugin will continue but
+	 * will not generate a report.
+	 */
+	private void initialiseReporting() {
+		//create a non singleton velocity instance
+		VelocityEngine inVelocityEngine = new VelocityEngine();
+		//setup the report generator
+		ReportGenerator.init(inVelocityEngine);
+		try {
+
+			outputFile.getParentFile().mkdirs();
+			reportWriter = new BufferedWriter(new FileWriter(outputFile));
+		} catch (IOException e) {
+			getLog().error("Failed to initialise reporting continuing anyway", e);
+			//don't attempt to create a report
+			createReport =false;
+		}
+	}
+
 
 }
